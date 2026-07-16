@@ -41,6 +41,6 @@ temp/
 
 # Package manager lock files (optional)
 package-lock.json
-package.json
+*.json
 # yarn.lock
 # pnpm-lock.yaml

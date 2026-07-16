@@ -103,6 +103,8 @@ const pool = new Pool({
 
 # postgresql://postgres:[YOUR-PASSWORD]@db.esqjjrbofvqtlhkkrrfk.supabase.co:5432/postgres
 
+## Dosti!@#$%^&*!@#$%^&*(
+
 module.exports = pool;
 Step 8: Create Express Server
 
