@@ -1,18 +1,11 @@
-const express = require("express");
-const router = express.Router();
+app.get("/users", async (req, res) => {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*");
 
-const {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
-} = require("../controllers/userController");
+  if (error) {
+    return res.status(500).json(error);
+  }
 
-router.get("/", getUsers);
-router.get("/:id", getUser);
-router.post("/", createUser);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
-
-module.exports = router;
+  res.json(data);
+});
