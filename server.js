@@ -16,40 +16,117 @@ const supabase = createClient(
     }
   }
 );
+const TABLE = "users"; // Change this if your table has a different name
 
-// Home route
+// Home
 app.get("/", (req, res) => {
-  res.send("Node.js + Supabase API is running");
+  res.send("Supabase CRUD API Running...");
 });
 
-// Get all users
+
+// =====================
+// GET ALL USERS
+// =====================
 app.get("/users", async (req, res) => {
   const { data, error } = await supabase
-    .from("users")
+    .from(TABLE)
     .select("*");
 
-  if (error) {
+  if (error)
     return res.status(500).json(error);
-  }
 
   res.json(data);
 });
 
-// Create user
-app.post("/user", async (req, res) => {
+
+// =====================
+// GET USER BY ID
+// =====================
+app.get("/users/:id", async (req, res) => {
+
+  const { id } = req.params;
+
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error)
+    return res.status(404).json(error);
+
+  res.json(data);
+});
+
+
+// =====================
+// CREATE USER
+// =====================
+app.post("/users", async (req, res) => {
+
   const { name, email } = req.body;
 
   const { data, error } = await supabase
-    .from("users")
-    .insert([{ name, email }])
+    .from(TABLE)
+    .insert([
+      {
+        name,
+        email,
+      },
+    ])
     .select();
 
-  if (error) {
+  if (error)
     return res.status(500).json(error);
-  }
 
   res.status(201).json(data);
 });
+
+
+// =====================
+// UPDATE USER
+// =====================
+app.put("/users/:id", async (req, res) => {
+
+  const { id } = req.params;
+  const { name, email } = req.body;
+
+  const { data, error } = await supabase
+    .from(TABLE)
+    .update({
+      name,
+      email,
+    })
+    .eq("id", id)
+    .select();
+
+  if (error)
+    return res.status(500).json(error);
+
+  res.json(data);
+});
+
+
+// =====================
+// DELETE USER
+// =====================
+app.delete("/users/:id", async (req, res) => {
+
+  const { id } = req.params;
+
+  const { error } = await supabase
+    .from(TABLE)
+    .delete()
+    .eq("id", id);
+
+  if (error)
+    return res.status(500).json(error);
+
+  res.json({
+    message: "User deleted successfully"
+  });
+});
+
 
 const PORT = process.env.PORT || 3000;
 
