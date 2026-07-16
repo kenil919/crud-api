@@ -36,7 +36,7 @@ app.get("/users", async (req, res) => {
 });
 
 // Create user
-app.post("/users", async (req, res) => {
+app.post("/user", async (req, res) => {
   const { name, email } = req.body;
 
   const { data, error } = await supabase
